@@ -6,6 +6,11 @@
 import Discord from 'discord.js'                                                        // Importing Discord.js package
 import FS      from 'fs'                                                                // Importing FS package
 import PATH    from 'path'                                                              // Importing PATH package
+import ENV     from 'dotenv'                                                            // Importing DotENV package
+
+const CONFIG          = ENV.config().parsed,                                            // Parsing configuration
+      client          = new Discord.Client()                                            // Client initialization
+      client.commands = new Discord.Collection()                                        // Client commands collection creation
 
 class Bot {
 
@@ -16,7 +21,6 @@ class Bot {
     }) {
 
         this.options = options
-
 
     }
 
@@ -30,7 +34,21 @@ class Bot {
 
                 for (const file of content) {
                     
-                    console.log(file)
+                    import(file).then(value => {
+                        
+                        if (value.default.length === 0) return
+                        
+                        value = value.default
+                        const name     = value.name        ?? PATH.parse(file).base.split('.')[0] ,
+                              desc     = value.description ?? 'Some description'                  ,
+                              category = value.category    ?? 'Some category'                     ,
+                              run      = value.run         ?? Object
+
+                        if (!client.commands[category]) client.commands[category] = new Discord.Collection()
+
+                        client.commands[category].set(name, {category, desc, run})
+
+                    })
 
                 }
 
@@ -46,7 +64,17 @@ class Bot {
 
                 for (const file of content) {
                     
-                    console.log(file)
+                    import(file).then(value => {
+                        
+                        if (value.default.length === 0) return
+                        
+                        value = value.default
+                        const name = value.name    ?? PATH.parse(file).base ,
+                              run  = new value.run ?? Object
+
+                        client.on(name, run.event.bind(null, client))
+
+                    })
 
                 }
 
@@ -74,3 +102,5 @@ class Bot {
 }
 
 new Bot().init()
+
+client.login(CONFIG.TOKEN)
