@@ -4,7 +4,7 @@
   "description": "🤖 Discord.js ready-to-use template.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec ./node_modules/.bin/babel-node main.js"
   },
   "repository": {
     "type": "git",
