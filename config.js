@@ -33,10 +33,6 @@ export default {
         events      : {                             // Events loading
             color   : '#'                         ,
             message : 'test'
-        }                                         , 
-        listeners   : {                             // Listeners loading
-            color   : '#'                         ,
-            message : 'test'
         }
 
     }

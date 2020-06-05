@@ -17,7 +17,6 @@ class Bot {
     constructor (options = {
         commands  : 'commands'  ,
         events    : 'events'    ,
-        listeners : 'listeners' ,
     }) {
 
         this.options = options
@@ -66,31 +65,19 @@ class Bot {
                     
                     import(file).then(value => {
                         
-                        if (value.default.length === 0) return
-                        
-                        value = value.default
-                        const name = value.name    ?? PATH.parse(file).base ,
-                              run  = new value.run ?? Object
+                        if (value.default.length > 0) {
 
-                        client.on(name, run.event.bind(null, client))
+                            value = value.default
+                            const name = value.name    ?? PATH.parse(file).base ,
+                                run  = new value.run ?? Object
+
+                            client.on(name, run.event.bind(null, client))
+
+                        }
+                        
+                        
 
                     })
-
-                }
-
-            })
-        })
-        
-        FS.exists(PATH.resolve(PATH.join(__dirname, this.options.listeners)), bool => { // Listeners loading
-            if (!bool) return
-            FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.listeners)), (error, content) => {
-                if (error) throw error
-                content = content.filter(x => x.endsWith('.js'))
-                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.listeners, x)))
-
-                for (const file of content) {
-                    
-                    console.log(file)
 
                 }
 
