@@ -17,22 +17,60 @@ class Bot {
 
         this.options = options
 
+
     }
 
-    static init () {
-
+    init () {
         FS.exists(PATH.resolve(PATH.join(__dirname, this.options.commands)), bool => {  // Commands loading
             if (!bool) return
+            FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.commands)), (error, content) => {
+                if (error) throw error
+                content = content.filter(x => x.endsWith('.js'))
+                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.commands, x)))
+
+                for (const file of content) {
+                    
+                    console.log(file)
+
+                }
+
+            })
         })
 
         FS.exists(PATH.resolve(PATH.join(__dirname, this.options.events)), bool => {    // Events loading
             if (!bool) return
+            FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.events)), (error, content) => {
+                if (error) throw error
+                content = content.filter(x => x.endsWith('.js'))
+                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.events, x)))
+
+                for (const file of content) {
+                    
+                    console.log(file)
+
+                }
+
+            })
         })
         
         FS.exists(PATH.resolve(PATH.join(__dirname, this.options.listeners)), bool => { // Listeners loading
             if (!bool) return
+            FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.listeners)), (error, content) => {
+                if (error) throw error
+                content = content.filter(x => x.endsWith('.js'))
+                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.listeners, x)))
+
+                for (const file of content) {
+                    
+                    console.log(file)
+
+                }
+
+            })
         })
 
     }
 
 }
+
+new Bot().init()

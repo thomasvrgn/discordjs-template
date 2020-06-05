@@ -26,6 +26,7 @@
   "dependencies": {
     "@babel/core": "^7.10.2",
     "@babel/node": "^7.10.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "discord.js": "^11.6.4",
     "fs": "0.0.1-security",
