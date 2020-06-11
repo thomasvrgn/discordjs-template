@@ -43,7 +43,6 @@ class Bot {
                             category = value.category    ?? 'Some category'                     ,
                             run      = value.run         ?? Object
 
-
                         client.commands.set(name, {category, desc, run})
 
                     })
@@ -71,8 +70,6 @@ class Bot {
 
                         }
 
-
-
                     })
 
                 }
@@ -85,5 +82,4 @@ class Bot {
 }
 
 new Bot().init()
-
 client.login(CONFIG.TOKEN)

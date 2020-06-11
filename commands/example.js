@@ -11,10 +11,17 @@ export default {
 
     run         : class {
 
-        constructor (args, client) {
+        constructor (client, args, message) {
             
             this.arguments = args
             this.client    = client
+            this.message   = message
+
+        }
+
+        command () {
+
+            this.message.reply('Command fired!')
 
         }
 
