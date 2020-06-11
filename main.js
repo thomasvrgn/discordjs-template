@@ -29,23 +29,22 @@ class Bot {
             FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.commands)), (error, content) => {
                 if (error) throw error
                 content = content.filter(x => x.endsWith('.js'))
-                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.commands, x)))
+                    .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.commands, x)))
 
                 for (const file of content) {
-                    
+
                     import(file).then(value => {
-                        
+
                         if (value.default.length === 0) return
-                        
+
                         value = value.default
                         const name     = value.name        ?? PATH.parse(file).base.split('.')[0] ,
-                              desc     = value.description ?? 'Some description'                  ,
-                              category = value.category    ?? 'Some category'                     ,
-                              run      = value.run         ?? Object
+                            desc     = value.description ?? 'Some description'                  ,
+                            category = value.category    ?? 'Some category'                     ,
+                            run      = value.run         ?? Object
 
-                        if (!client.commands[category]) client.commands[category] = new Discord.Collection()
 
-                        client.commands[category].set(name, {category, desc, run})
+                        client.commands.set(name, {category, desc, run})
 
                     })
 
@@ -53,19 +52,16 @@ class Bot {
 
             })
         })
-
         FS.exists(PATH.resolve(PATH.join(__dirname, this.options.events)), bool => {    // Events loading
             if (!bool) return
             FS.readdir(PATH.resolve(PATH.join(__dirname, this.options.events)), (error, content) => {
                 if (error) throw error
                 content = content.filter(x => x.endsWith('.js'))
-                                 .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.events, x)))
+                    .map(x => x = PATH.resolve(PATH.join(__dirname, this.options.events, x)))
 
                 for (const file of content) {
-                    
                     import(file).then(value => {
-                        
-                        if (value.default.length > 0) {
+                        if (value.default.run) {
 
                             value = value.default
                             const name = value.name    ?? PATH.parse(file).base ,
@@ -74,8 +70,8 @@ class Bot {
                             client.on(name, run.event.bind(null, client))
 
                         }
-                        
-                        
+
+
 
                     })
 
